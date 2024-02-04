@@ -1,0 +1,228 @@
+{
+  //---------
+  // VIM STUFF
+  //---------
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1
+  },
+  "vim.leader": "<space>",
+  "vim.useSystemClipboard": true,
+  //---normal mode
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<C-s>"],
+      "commands": [":w!"],
+      "silent": false
+    },
+    {
+      "before": ["<C-d>"],
+      "after": ["<C-d>", "z", "z"]
+    },
+    {
+      "before": ["<C-u>"],
+      "after": ["<C-u>", "z", "z"]
+    },
+    {
+      "before": ["<S-h>"],
+      "commands": [":bprevious"],
+      "silent": true
+    },
+    {
+      "before": ["<S-l>"],
+      "commands": [":bnext"],
+      "silent": true
+    },
+    {
+      "before": ["leader", "v"],
+      "commands": [":vsplit"],
+      "silent": true
+    },
+    {
+      "before": ["leader", "s"],
+      "commands": [":split"],
+      "silent": true
+    },
+    {
+      "before": ["leader", "q"],
+      "commands": [":q"],
+      "silent": true
+    },
+    {
+      "before": ["<C-h>"],
+      "commands": ["workbench.action.focusLeftGroup"],
+      "silent": true
+    },
+    {
+      "before": ["<C-l>"],
+      "commands": ["workbench.action.focusRightGroup"],
+      "silent": true
+    },
+    {
+      "before": ["<C-j>"],
+      "commands": ["workbench.action.focusBelowGroup"],
+      "silent": true
+    },
+    {
+      "before": ["<C-k>"],
+      "commands": ["workbench.action.focusAboveGroup"],
+      "silent": true
+    },
+    {
+      "before": ["<leader>", "e"],
+      "commands": ["workbench.view.explorer"],
+      "silent": true
+    },
+    {
+      "before": ["leader", "x"],
+      "commands": ["workbench.view.extensions"],
+      "silent": true
+    },
+    {
+      "before": ["<C-p>"],
+      "commands": ["workbench.action.quickOpen"],
+      "silent": true
+    },
+    {
+      "before": ["<leader>", "f", "f"],
+      "commands": ["workbench.action.quickOpen"],
+      "silent": true
+    },
+    {
+      "before": ["<leader>", "f", "g"],
+      "commands": ["workbench.action.experimental.quickTextSearch"],
+      "silent": true
+    },
+    {
+      "before": ["<leader>", "f", "r"],
+      "commands": ["workbench.action.replaceInFiles"],
+      "silent": true
+    },
+    {
+      "before": ["x"],
+      "after": ["\"", "_", "x"]
+    },
+    {
+      "before": ["<leader>", "d", "d"],
+      "after": ["\"", "_", "d", "d"]
+    }
+  ],
+  //---insert mode
+  "vim.insertModeKeyBindingsNonRecursive": [
+    {
+      // exit insert mode
+      "before": ["j", "k"],
+      "after": ["<Esc>"]
+    }
+  ],
+  //---visual mode
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      // when pasting over something delete to void register then paste before (cursor at end)
+      "before": ["p"],
+      "after": ["\"", "_", "d", "P"]
+    },
+    {
+      // move highlighted lines down
+      "before": ["<S-j>"],
+      "commands": ["editor.action.moveLinesDownAction"]
+    },
+    {
+      // move highlighted lines up
+      "before": ["<S-k>"],
+      "commands": ["editor.action.moveLinesUpAction"]
+    },
+    {
+      // delete to void register
+      "before": ["<leader>", "d"],
+      "after": ["\"", "_", "d"]
+    }
+    // TODO: when yanking put cursor at end
+  ],
+
+  //---------
+  // AL STUFF
+  //---------
+  "[al]": {
+    "editor.defaultFormatter": "ms-dynamics-smb.al"
+  },
+
+  //---------
+  // JS STUFF
+  //---------
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  //---------
+  // GO STUFF
+  //---------
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "gopls": {
+    "ui.semanticTokens": true,
+    "ui.noSemanticString": true
+  },
+  "go.toolsManagement.autoUpdate": true,
+  "files.associations": {
+    "*.tmpl": "html"
+  },
+
+  //------------
+  // ASTRO STUFF
+  //------------
+  "prettier.documentSelectors": ["**/*.astro"],
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
+
+  //---------------
+  // STANDARD STUFF
+  //---------------
+  // Clean up program
+  "window.nativeFullScreen": false,
+  "workbench.startupEditor": "none",
+  "workbench.activityBar.location": "hidden",
+  "window.restoreWindows": "none",
+  "breadcrumbs.enabled": false,
+  "editor.minimap.enabled": false,
+  "window.commandCenter": false,
+  "workbench.layoutControl.enabled": false,
+  "workbench.tips.enabled": false,
+  "workbench.editor.restoreViewState": false,
+  "workbench.editor.enablePreview": false,
+  "window.newWindowDimensions": "inherit",
+  "workbench.editor.showTabs": "none",
+
+  // Theme
+  "terminal.integrated.fontSize": 16,
+  "workbench.iconTheme": "gruvbox-material-icon-theme",
+  "workbench.colorTheme": "Gruvbox Material Dark",
+  "gruvboxMaterial.darkContrast": "hard",
+  "gruvboxMaterial.darkPalette": "material",
+
+  // Editor
+  "editor.fontFamily": "'JetBrainsMono Nerd Font', Consolas, 'Courier New', monospace",
+  "editor.fontSize": 16,
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // "editor.lineNumbers": "relative",
+  "editor.padding.top": 0,
+  "editor.copyWithSyntaxHighlighting": false,
+  "editor.emptySelectionClipboard": false,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.snippetSuggestions": "top",
+  "editor.detectIndentation": false,
+  "editor.bracketPairColorization.enabled": false,
+  "editor.guides.highlightActiveBracketPair": false,
+  "editor.guides.bracketPairs": "active",
+  "editor.wordWrap": "off",
+  "editor.colorDecorators": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "diffEditor.renderSideBySide": false,
+  "diffEditor.ignoreTrimWhitespace": false,
+
+  // Misc
+  "security.workspace.trust.untrustedFiles": "open"
+}
