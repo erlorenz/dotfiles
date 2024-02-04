@@ -199,6 +199,11 @@
   "workbench.colorTheme": "Gruvbox Material Dark",
   "gruvboxMaterial.darkContrast": "hard",
   "gruvboxMaterial.darkPalette": "material",
+  "gruvboxMaterial.darkWorkbench": "material",
+  "workbench.colorCustomizations": {
+    "sideBar.border": "#363636",
+    "panel.border": "#363636"
+  },
 
   // Editor
   "editor.fontFamily": "'JetBrainsMono Nerd Font', Consolas, 'Courier New', monospace",
@@ -214,8 +219,8 @@
   "editor.snippetSuggestions": "top",
   "editor.detectIndentation": false,
   "editor.bracketPairColorization.enabled": false,
-  "editor.guides.highlightActiveBracketPair": false,
-  "editor.guides.bracketPairs": "active",
+  "editor.guides.highlightActiveBracketPair": true,
+  "editor.guides.bracketPairs": false,
   "editor.wordWrap": "off",
   "editor.colorDecorators": true,
   "files.trimTrailingWhitespace": true,
