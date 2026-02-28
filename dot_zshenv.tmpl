@@ -1,0 +1,47 @@
+# .zshenv
+
+# --- Editor Setup ---
+export EDITOR=nvim
+export VISUAL=nvim
+
+# --- XDG Base Directory Standards ---
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+
+# --- Zsh Config Location ---
+export ZDOTDIR=${ZDOTDIR:-$XDG_CONFIG_HOME/zsh}
+
+# --- Path Configuration ---
+typeset -gU path fpath
+
+# Define path using the (N) flag (Null Glob).
+# Zsh will silently ignore directories that do not exist.
+path=(
+  $HOME/{,s}bin(N)
+  $HOME/.local/{,s}bin(N)
+
+{{- if eq .chezmoi.os "darwin" }}
+  # macOS Homebrew & MacPorts
+  /opt/{homebrew,local}/{,s}bin(N)
+{{- end }}
+
+  # Standard System Paths
+  /usr/local/{,s}bin(N)
+
+  # Language specific
+  $HOME/go/bin(N)
+
+  # mise shims (for non-interactive contexts: VSCode, cron, scripts)
+  $HOME/.local/share/mise/shims(N)
+
+  # Append existing system path
+  $path
+)
+
+{{- if eq .chezmoi.os "darwin" }}
+
+# --- SSH Agent (macOS Only) ---
+# On WSL, we use the ssh alias in .zshrc instead.
+export SSH_AUTH_SOCK=$XDG_CONFIG_HOME/op/agent.sock
+{{- end }}

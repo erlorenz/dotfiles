@@ -1,0 +1,10 @@
+[tools]
+chezmoi = "latest"
+
+[tasks.apply]
+description = "Apply dotfiles via chezmoi"
+run = "chezmoi apply --source ~/dotfiles"
+
+[tasks.diff]
+description = "Preview dotfiles changes"
+run = "chezmoi diff --source ~/dotfiles"

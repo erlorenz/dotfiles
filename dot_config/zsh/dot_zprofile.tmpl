@@ -1,0 +1,6 @@
+{{- if eq .chezmoi.os "darwin" }}
+# --- macOS Only ---
+
+# OrbStack: command-line tools and integration
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+{{- end }}

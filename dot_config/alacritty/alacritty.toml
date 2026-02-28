@@ -1,0 +1,54 @@
+[env]
+TERM = "xterm-256color"
+
+[terminal]
+osc52 = "CopyPaste"
+
+[font]
+size = 16
+normal = { family = "JetBrains Mono", style = "Regular" }
+bold = { family = "JetBrains Mono", style = "Bold" }
+italic = { family = "JetBrains Mono", style = "Italic" }
+
+[window]
+padding.x = 14
+padding.y = 14
+decorations = "None"
+
+[scrolling]
+history = 50000
+
+# Theme: Yukinord Dark
+# To switch back to Tokyo Night, replace everything below with:
+# general.import = ["~/.config/alacritty/themes/themes/tokyo-night.toml"]
+[colors.primary]
+background = "#1c212a"
+foreground = "#d8dee9"
+
+[colors.cursor]
+cursor = "#eceff4"
+text = "#1c212a"
+
+[colors.selection]
+background = "#5e81ac"
+text = "#d8dee9"
+
+[colors.normal]
+black = "#1c212a"
+red = "#bf616a"
+green = "#a3be8c"
+yellow = "#ebcb8b"
+blue = "#81a1c1"
+magenta = "#b48ead"
+cyan = "#88c0d0"
+white = "#e5e9f0"
+
+[colors.bright]
+black = "#4c566a"
+red = "#bf616a"
+green = "#a3be8c"
+yellow = "#ebcb8b"
+blue = "#81a1c1"
+magenta = "#b48ead"
+cyan = "#8fbcbb"
+white = "#eceff4"

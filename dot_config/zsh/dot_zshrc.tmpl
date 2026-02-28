@@ -1,0 +1,184 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# --- Zsh Options ---
+bindkey -e
+
+setopt COMBINING_CHARS
+setopt MENU_COMPLETE
+setopt AUTO_MENU
+setopt COMPLETE_IN_WORD
+setopt ALWAYS_TO_END
+setopt CHASE_LINKS
+setopt SHARE_HISTORY
+setopt APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
+setopt EXTENDED_GLOB
+setopt INTERACTIVE_COMMENTS
+setopt AUTO_CD
+unsetopt BEEP
+
+# Arrow keys: history search matching current input
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
+bindkey "^[[C" forward-char
+bindkey "^[[D" backward-char
+
+# --- Completion ---
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=* l:|=*'
+zstyle ':completion:*' match-hidden-files off
+zstyle ':completion:*' list-prompt ''
+zstyle ':completion:*' select-prompt ''
+zstyle ':completion:*' file-list all
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# --- Aliases ---
+alias vim=nvim
+alias v='vim'
+n() { if [[ $# -eq 0 ]]; then nvim .; else nvim "$@"; fi; }
+
+alias ls='eza -lh --group-directories-first --icons=auto'
+alias lsa='ls -a'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+alias wezrc="vim $XDG_CONFIG_HOME/wezterm/wezterm.lua"
+alias zrc="vim $XDG_CONFIG_HOME/zsh/.zshrc"
+
+# Fuzzy find
+alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
+alias eff='$EDITOR $(ff)'
+
+# Git
+alias g='git'
+alias gcm='git commit -m'
+alias gcam='git commit -a -m'
+alias gcad='git commit -a --amend'
+
+# Smart cd (zoxide fallback)
+alias cd="zd"
+zd() {
+  if [[ $# -eq 0 ]]; then
+    builtin cd ~ && return
+  elif [[ -d $1 ]]; then
+    builtin cd "$1"
+  else
+    z "$@" && printf "%s " "->" && pwd || echo "Error: Directory not found"
+  fi
+}
+
+# Tools
+alias c='claude'
+alias cx='printf "\033[2J\033[3J\033[H" && claude --dangerously-skip-permissions'
+alias oc='opencode'
+alias d='docker'
+alias t='tmux attach || tmux new -s Work'
+
+{{- if eq .chezmoi.os "linux" }}
+
+# WSL: use Windows 1Password SSH
+alias ssh="ssh.exe"
+{{- end }}
+
+# --- Tmux dev layouts ---
+
+# IDE layout: editor left, AI right, terminal below
+# Usage: tdl <c|cx|claude|other_ai> [<second_ai>]
+tdl() {
+  [[ -z $1 ]] && { echo "Usage: tdl <c|cx|claude|other_ai> [<second_ai>]"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tdl."; return 1; }
+
+  local current_dir="${PWD}"
+  local editor_pane ai_pane ai2_pane
+  local ai="$1"
+  local ai2="$2"
+
+  editor_pane="$TMUX_PANE"
+
+  tmux rename-window -t "$editor_pane" "$(basename "$current_dir")"
+
+  # Terminal below (15%)
+  tmux split-window -v -p 15 -t "$editor_pane" -c "$current_dir"
+
+  # AI on right (30%)
+  ai_pane=$(tmux split-window -h -p 30 -t "$editor_pane" -c "$current_dir" -P -F '#{pane_id}')
+
+  # Optional second AI below the first
+  if [[ -n $ai2 ]]; then
+    ai2_pane=$(tmux split-window -v -t "$ai_pane" -c "$current_dir" -P -F '#{pane_id}')
+    tmux send-keys -t "$ai2_pane" "$ai2" C-m
+  fi
+
+  tmux send-keys -t "$ai_pane" "$ai" C-m
+  tmux send-keys -t "$editor_pane" "$EDITOR ." C-m
+  tmux select-pane -t "$editor_pane"
+}
+
+# Open tdl for every subdirectory in a new tmux window
+# Usage: tdlm <ai> [<second_ai>]
+tdlm() {
+  [[ -z $1 ]] && { echo "Usage: tdlm <ai> [<second_ai>]"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tdlm."; return 1; }
+
+  local ai="$1"
+  local ai2="$2"
+  local base_dir="$PWD"
+  local first=true
+
+  tmux rename-session "$(basename "$base_dir" | tr '.:' '--')"
+
+  for dir in "$base_dir"/*/; do
+    [[ -d $dir ]] || continue
+    local dirpath="${dir%/}"
+
+    if $first; then
+      tmux send-keys -t "$TMUX_PANE" "cd '$dirpath' && tdl $ai $ai2" C-m
+      first=false
+    else
+      local pane_id=$(tmux new-window -c "$dirpath" -P -F '#{pane_id}')
+      tmux send-keys -t "$pane_id" "tdl $ai $ai2" C-m
+    fi
+  done
+}
+
+# Multi-pane swarm: N panes all running the same command
+# Usage: tsl <pane_count> <command>
+tsl() {
+  [[ -z $1 || -z $2 ]] && { echo "Usage: tsl <pane_count> <command>"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tsl."; return 1; }
+
+  local count="$1"
+  local cmd="$2"
+  local current_dir="${PWD}"
+  local -a panes
+
+  tmux rename-window -t "$TMUX_PANE" "$(basename "$current_dir")"
+  panes+=("$TMUX_PANE")
+
+  while (( ${#panes[@]} < count )); do
+    local new_pane
+    local split_target="${panes[-1]}"
+    new_pane=$(tmux split-window -h -t "$split_target" -c "$current_dir" -P -F '#{pane_id}')
+    panes+=("$new_pane")
+    tmux select-layout -t "${panes[0]}" tiled
+  done
+
+  for pane in "${panes[@]}"; do
+    tmux send-keys -t "$pane" "$cmd" C-m
+  done
+
+  tmux select-pane -t "${panes[0]}"
+}
+
+# --- Tool Inits ---
+eval "$(mise activate zsh)"
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+
+# fzf
+source <(fzf --zsh)

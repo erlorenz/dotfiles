@@ -1,0 +1,12 @@
+[tools]
+node = "24"
+deno = "latest"
+go = "1.26"
+ruby = "latest"
+python = "latest"
+biome = "latest"
+sops = "latest"
+age = "latest"
+
+[settings]
+experimental = true
