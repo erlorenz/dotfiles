@@ -1,6 +1,10 @@
 [tools]
 chezmoi = "latest"
 
+[tasks.init]
+description = "Initialize chezmoi (prompts for name/email)"
+run = "chezmoi init --source ~/dotfiles"
+
 [tasks.apply]
 description = "Apply dotfiles via chezmoi"
 run = "chezmoi apply --source ~/dotfiles"
