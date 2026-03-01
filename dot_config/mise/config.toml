@@ -18,7 +18,6 @@ fzf = "latest"
 bat = "latest"
 sops = "latest"
 age = "latest"
-chezmoi = "latest"
 
 [settings]
 experimental = true
