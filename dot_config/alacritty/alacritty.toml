@@ -19,4 +19,5 @@ decorations = "None"
 history = 50000
 
 # Theme: Tokyo Night
-general.import = ["~/.config/alacritty/themes/themes/tokyo-night.toml"]
+[general]
+import = ["~/.config/alacritty/themes/themes/tokyo-night.toml"]
