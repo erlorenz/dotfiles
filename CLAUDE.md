@@ -26,6 +26,7 @@ Follow DHH's **Omarchy/Omadots** conventions wherever possible — don't reinven
 | **VSCode** | IDE | With AI extensions, used alongside terminal workflow |
 | **Lazygit** | Git TUI | Omarchy standard |
 | **Lazydocker** | Docker TUI | Omarchy standard |
+| **Starship** | Prompt | Cross-shell prompt theme |
 | **Mise** | Dev tool manager | Runtimes, CLI tools, chezmoi itself |
 | **Chezmoi** | Dotfile sync | Deploys configs from this repo to `~/.config/` and `~/` |
 | **1Password** | SSH agent | Platform-specific socket/alias config |
@@ -82,12 +83,15 @@ Use `.chezmoiignore` to skip files per platform:
 ## Target Repo Structure
 
 ```
-dotfiles/                              # Chezmoi source directory
+~/.local/share/chezmoi/                # Chezmoi source directory (standard location)
 ├── CLAUDE.md                          # This file
 ├── mise.toml                          # Bootstrap: installs chezmoi
 ├── .chezmoi.toml.tmpl                 # Per-machine chezmoi config
 ├── .chezmoiignore                     # Platform-conditional ignores
+├── .chezmoitemplates/                 # Shared Go template partials
 ├── dot_zshenv.tmpl                    # → ~/.zshenv
+├── run_onchange_windows-alacritty.sh.tmpl  # WSL: syncs Alacritty config to Windows side
+├── run_onchange_windows-wezterm.sh.tmpl    # WSL: syncs Wezterm config to Windows side
 ├── dot_config/
 │   ├── alacritty/
 │   │   └── alacritty.toml.tmpl        # Terminal config (minimal — tmux does the work)
@@ -96,12 +100,16 @@ dotfiles/                              # Chezmoi source directory
 │   ├── tmux/
 │   │   └── tmux.conf.tmpl            # Primary multiplexer config
 │   ├── nvim/                          # LazyVim — track Omarchy closely
-│   ├── lazygit/
+│   ├── git/                           # Git config
+│   ├── zsh/                           # Zsh config
+│   ├── starship.toml                  # Starship prompt theme
 │   └── mise/
 │       └── config.toml                # Global mise settings
-└── private_dot_ssh/
-    └── config.tmpl                    # 1Password SSH agent config
 ```
+
+## WSL Windows-Side Config Sync
+
+On WSL, terminal emulators (Wezterm, Alacritty) run on the Windows side but their configs live in the Linux filesystem. Chezmoi `run_onchange_` scripts automatically copy configs to the Windows AppData paths when they change. These scripts are conditionally skipped on macOS via `.chezmoiignore`.
 
 ## SSH / 1Password
 
@@ -151,12 +159,12 @@ brew install mise
 curl https://mise.run | sh
 
 # 2. Clone and install
-git clone https://github.com/YOUR_USER/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone git@github.com:erlorenz/dotfiles.git ~/.local/share/chezmoi
+cd ~/.local/share/chezmoi
 mise install          # installs chezmoi via mise.toml
 
 # 3. Apply dotfiles
-chezmoi init --source ~/dotfiles --apply
+chezmoi init --apply
 ```
 
 ## Working on These Dotfiles
