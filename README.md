@@ -57,6 +57,15 @@ chezmoi diff                           # preview what would change
 
 Never edit target files (e.g. `~/.config/...`) directly — always edit the source and apply.
 
+## Themes
+
+Tokyo Night across all tools. To switch themes, update the hardcoded colors in:
+- `dot_config/alacritty/alacritty.toml` — replace `[colors.*]` sections
+- `dot_config/nvim/` — swap the colorscheme plugin
+- `dot_config/btop/themes/` — swap theme file and update `color_theme` in btop.conf.tmpl
+
+Reference: [omarchy themes](https://github.com/basecamp/omarchy/tree/master/themes) has `colors.toml`, `neovim.lua`, and `btop.theme` for each theme.
+
 ## Private / Machine-Specific Config
 
 For work-specific aliases, env vars, or anything not suitable for the public repo, create `~/.config/zsh/local.zsh` manually on that machine. It is sourced automatically by zshrc but never managed by chezmoi.

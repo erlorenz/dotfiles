@@ -97,7 +97,11 @@ Use `.chezmoiignore` to skip files per platform:
 ├── dot_zshenv.tmpl                    # → ~/.zshenv
 ├── dot_config/
 │   ├── alacritty/
-│   │   └── alacritty.toml.tmpl        # Terminal config (minimal — tmux does the work)
+│   │   └── alacritty.toml             # Terminal config — Tokyo Night colors hardcoded
+│   ├── btop/
+│   │   ├── btop.conf.tmpl             # Platform-conditional (truecolor mac, TTY linux)
+│   │   └── themes/
+│   │       └── tokyo-night.theme      # Tokyo Night theme for btop
 │   ├── tmux/
 │   │   └── tmux.conf.tmpl            # Primary multiplexer config
 │   ├── nvim/                          # LazyVim — track Omarchy closely
@@ -107,6 +111,20 @@ Use `.chezmoiignore` to skip files per platform:
 │   └── mise/
 │       └── config.toml                # Global mise settings
 ```
+
+## Themes
+
+We follow how omarchy handles themes — each tool's colors are hardcoded per theme rather than using a theme importer. To switch themes, update these files:
+
+| Tool | File | What to change |
+|---|---|---|
+| Alacritty | `dot_config/alacritty/alacritty.toml` | Replace `[colors.*]` sections |
+| Neovim | `dot_config/nvim/` | Swap colorscheme plugin (e.g. `tokyonight.nvim`) |
+| btop | `dot_config/btop/themes/tokyo-night.theme` | Swap theme file, update `color_theme` in btop.conf.tmpl |
+
+Reference themes from the omarchy repo: `themes/<theme-name>/` has `colors.toml` (alacritty), `neovim.lua`, and `btop.theme` for each theme.
+
+Tmux does **not** have a theme — it uses the terminal's colors passively. Style the statusbar in `tmux.conf` independently.
 
 ## WSL Windows-Side Config Sync
 
