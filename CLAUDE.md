@@ -114,6 +114,15 @@ New-Item -ItemType SymbolicLink `
 
 After that, chezmoi managing `~/.config/alacritty/` in WSL is sufficient.
 
+## Private / Machine-Specific Config
+
+For work-specific aliases, env vars, or anything not suitable for the public repo, create `~/.config/zsh/local.zsh` manually on that machine. It is sourced automatically by zshrc but never managed by chezmoi.
+
+For secrets (API keys, tokens), use 1Password + chezmoi templates:
+```
+export WORK_API_KEY="{{ onepasswordRead "op://Work/api-key/credential" }}"
+```
+
 ## SSH / 1Password
 
 **macOS**: Set the SSH agent socket to 1Password's:
