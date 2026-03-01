@@ -155,19 +155,17 @@ For WSL specifically: check for `/proc/version` containing "microsoft".
 ## Bootstrap
 
 ```bash
-# 1. Install mise
+# 1. Install chezmoi
 # macOS:
-brew install mise
+brew install chezmoi
 # WSL/Ubuntu:
-curl https://mise.run | sh
+sh -c "$(curl -fsLS get.chezmoi.io)"
 
-# 2. Clone and install
-git clone git@github.com:erlorenz/dotfiles.git ~/.local/share/chezmoi
-cd ~/.local/share/chezmoi
-mise install          # installs chezmoi via mise.toml
+# 2. Clone and apply dotfiles
+chezmoi init --apply git@github.com:erlorenz/dotfiles
 
-# 3. Apply dotfiles
-chezmoi init --apply
+# 3. Install mise tools
+mise install
 ```
 
 ## Working on These Dotfiles
