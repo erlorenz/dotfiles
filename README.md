@@ -39,12 +39,6 @@ chezmoi init --apply git@github.com:erlorenz/dotfiles
 
 This clones the repo to `~/.local/share/chezmoi` and applies all dotfiles in one shot.
 
-### 3. Install mise tools
-
-```bash
-mise install
-```
-
 ## Daily use
 
 ```bash

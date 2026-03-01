@@ -84,7 +84,6 @@ Use `.chezmoiignore` to skip files per platform:
 ```
 ~/.local/share/chezmoi/                # Chezmoi source directory (standard location)
 ├── CLAUDE.md                          # This file
-├── mise.toml                          # Bootstrap: installs chezmoi
 ├── .chezmoi.toml.tmpl                 # Per-machine chezmoi config
 ├── .chezmoiignore                     # Platform-conditional ignores
 ├── .chezmoitemplates/                 # Shared Go template partials
@@ -172,16 +171,13 @@ sh -c "$(curl -fsLS get.chezmoi.io)"
 
 # 2. Clone and apply dotfiles
 chezmoi init --apply git@github.com:erlorenz/dotfiles
-
-# 3. Install mise tools
-mise install
 ```
 
 ## Working on These Dotfiles
 
 ```bash
-mise run apply        # deploy configs to their destinations
-mise run diff         # preview what would change
+chezmoi apply         # deploy configs to their destinations
+chezmoi diff          # preview what would change
 chezmoi edit FILE     # edit a managed file
 chezmoi add FILE      # start managing a new file
 chezmoi re-add        # update source after editing targets directly
