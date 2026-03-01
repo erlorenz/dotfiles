@@ -1,15 +1,13 @@
 return {
-  -- { "folke/tokyonight.nvim" },
   {
-    "adibhanna/yukinord.nvim",
+    "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
   },
   {
     "LazyVim/LazyVim",
     opts = {
-      -- colorscheme = "tokyonight",
-      colorscheme = "yukinord",
+      colorscheme = "tokyonight",
     },
   },
 }

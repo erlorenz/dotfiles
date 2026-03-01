@@ -21,6 +21,11 @@ setopt INTERACTIVE_COMMENTS
 setopt AUTO_CD
 unsetopt BEEP
 
+# --- History ---
+HISTSIZE=32768
+SAVEHIST=32768
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+
 # Arrow keys: history search matching current input
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
@@ -28,12 +33,20 @@ bindkey "^[[C" forward-char
 bindkey "^[[D" backward-char
 
 # --- Completion ---
+autoload -Uz compinit
+if [[ -n $ZDOTDIR/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=* l:|=*'
 zstyle ':completion:*' match-hidden-files off
 zstyle ':completion:*' list-prompt ''
 zstyle ':completion:*' select-prompt ''
 zstyle ':completion:*' file-list all
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu select
 
 # --- Aliases ---
 alias vim=nvim
@@ -81,8 +94,14 @@ alias t='tmux attach || tmux new -s Work'
 
 {{- if eq .chezmoi.os "linux" }}
 
-# WSL: use Windows 1Password SSH
+# WSL: use Windows 1Password SSH & CLI
 alias ssh="ssh.exe"
+alias ssh-add="ssh-add.exe"
+alias op="/mnt/c/Users/ErikLorenz/AppData/Local/Microsoft/WinGet/Packages/AgileBits.1Password.CLI_Microsoft.Winget.Source_8wekyb3d8bbwe/op.exe"
+
+# WSL: clipboard integration
+alias pbcopy="clip.exe"
+alias pbpaste="powershell.exe -command 'Get-Clipboard'"
 {{- end }}
 
 # --- Tmux dev layouts ---
@@ -182,3 +201,19 @@ eval "$(zoxide init zsh)"
 
 # fzf
 source <(fzf --zsh)
+
+# --- Plugins ---
+{{- if eq .chezmoi.os "darwin" }}
+# macOS: Homebrew-installed zsh-autosuggestions
+[[ -f $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] \
+  && source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+{{- else if eq .chezmoi.os "linux" }}
+# Linux: package or manually cloned plugin
+[[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] \
+  && source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -f $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] \
+  && source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+{{- end }}
+
+# --- Local Overrides (not managed by chezmoi) ---
+[[ -f $ZDOTDIR/local.zsh ]] && source $ZDOTDIR/local.zsh

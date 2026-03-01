@@ -45,3 +45,14 @@ path=(
 # On WSL, we use the ssh alias in .zshrc instead.
 export SSH_AUTH_SOCK=$XDG_CONFIG_HOME/op/agent.sock
 {{- end }}
+
+
+{{ if eq .chezmoi.os "linux" }}
+{{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+
+# Get to the Windows user home folder
+
+WINHOME="/mnt/c/Users/ErikLorenz"
+
+{{   end }}
+{{ end }}

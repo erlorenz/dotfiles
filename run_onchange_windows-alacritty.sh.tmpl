@@ -1,0 +1,39 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+# Deploy Windows-side Alacritty config with WSL shell
+# This runs on chezmoi apply when the template changes
+
+WIN_APPDATA="/mnt/c/Users/ErikLorenz/AppData/Roaming"
+ALACRITTY_DIR="$WIN_APPDATA/alacritty"
+ALACRITTY_CONFIG="$ALACRITTY_DIR/alacritty.toml"
+
+mkdir -p "$ALACRITTY_DIR"
+
+cat > "$ALACRITTY_CONFIG" << 'ALEOF'
+[env]
+TERM = "xterm-256color"
+
+[terminal]
+osc52 = "CopyPaste"
+shell = { program = "wsl.exe", args = ["--cd", "~"] }
+
+[font]
+size = 16
+normal = { family = "JetBrains Mono", style = "Regular" }
+bold = { family = "JetBrains Mono", style = "Bold" }
+italic = { family = "JetBrains Mono", style = "Italic" }
+
+[window]
+padding.x = 14
+padding.y = 14
+decorations = "None"
+
+[scrolling]
+history = 50000
+
+# Theme: Tokyo Night
+general.import = ["~/.config/alacritty/themes/themes/tokyo-night.toml"]
+ALEOF
+
+echo "Deployed Windows Alacritty config to $ALACRITTY_CONFIG"
+{{ end -}}

@@ -1,13 +1,16 @@
 [tools]
-// Runtimes
+# Runtimes
 node = "24"
 deno = "latest"
 go = "1.26"
 ruby = "latest"
 python = "latest"
 
+# Editor
+neovim = "latest"
 
-// Command-line tools
+
+# Command-line tools
 zoxide = "latest"
 ripgrep = "latest"
 eza = "latest"

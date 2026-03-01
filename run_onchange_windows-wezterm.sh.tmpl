@@ -1,0 +1,12 @@
+{{ if eq .chezmoi.os "linux" -}}
+{{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+#!/bin/bash
+# Copy wezterm config to Windows home so Windows-side wezterm picks it up
+
+WIN_HOME="/mnt/c/Users/ErikLorenz"
+
+cp "$HOME/.config/wezterm/wezterm.lua" "$WIN_HOME/.wezterm.lua"
+
+echo "Deployed wezterm config to $WIN_HOME/.wezterm.lua"
+{{   end -}}
+{{ end -}}
