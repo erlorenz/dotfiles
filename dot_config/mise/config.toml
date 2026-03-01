@@ -1,10 +1,18 @@
 [tools]
+// Runtimes
 node = "24"
 deno = "latest"
 go = "1.26"
 ruby = "latest"
 python = "latest"
-biome = "latest"
+
+
+// Command-line tools
+zoxide = "latest"
+ripgrep = "latest"
+eza = "latest"
+fzf = "latest"
+bat = "latest"
 sops = "latest"
 age = "latest"
 
