@@ -9,7 +9,7 @@ config.default_domain = "WSL:Ubuntu"
 {{   end -}}
 {{ end -}}
 -- FONT
-config.font_size = 13.0
+config.font_size = 14.0
 config.font = wezterm.font("JetBrains Mono")
 
 -- COLOR
@@ -19,7 +19,7 @@ config.color_scheme = "Tokyo Night"
 config.audible_bell = "Disabled"
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
-config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+config.window_decorations = "RESIZE"
 config.window_padding = {
   left = "1cell",
   right = "1cell",

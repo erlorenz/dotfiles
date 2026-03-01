@@ -26,7 +26,7 @@ Follow DHH's Omarchy conventions wherever possible — don't reinvent the wheel.
 
 | Tool | Role | Notes |
 |---|---|---|
-| **Alacritty** | Terminal emulator | Synced with Omarchy/Omadots/Omamac. Keep minimal — tmux handles splits/tabs |
+| **WezTerm** | Terminal emulator | Native macOS window management. Alacritty config kept as fallback |
 | **Tmux** | Multiplexer | Primary window/split/tab manager. Prefix: `Ctrl+Space` |
 | **Neovim + LazyVim** | Editor | Minimal divergence from Omarchy defaults. Leader: `Space` |
 | **VSCode** | IDE | With AI extensions, used alongside terminal workflow |
@@ -96,8 +96,10 @@ Use `.chezmoiignore` to skip files per platform:
 ├── .chezmoitemplates/                 # Shared Go template partials
 ├── dot_zshenv.tmpl                    # → ~/.zshenv
 ├── dot_config/
+│   ├── wezterm/
+│   │   └── wezterm.lua                # Primary terminal config — Tokyo Night via built-in scheme
 │   ├── alacritty/
-│   │   └── alacritty.toml             # Terminal config — Tokyo Night colors hardcoded
+│   │   └── alacritty.toml             # Terminal config (fallback) — Tokyo Night colors hardcoded
 │   ├── btop/
 │   │   ├── btop.conf.tmpl             # Platform-conditional (truecolor mac, TTY linux)
 │   │   └── themes/
@@ -118,7 +120,8 @@ We follow how omarchy handles themes — each tool's colors are hardcoded per th
 
 | Tool | File | What to change |
 |---|---|---|
-| Alacritty | `dot_config/alacritty/alacritty.toml` | Replace `[colors.*]` sections |
+| WezTerm | `.chezmoitemplates/wezterm.lua` | Change `color_scheme` value (uses built-in schemes) |
+| Alacritty | `dot_config/alacritty/alacritty.toml` | Replace `[colors.*]` sections (fallback) |
 | Neovim | `dot_config/nvim/` | Swap colorscheme plugin (e.g. `tokyonight.nvim`) |
 | btop | `dot_config/btop/themes/tokyo-night.theme` | Swap theme file, update `color_theme` in btop.conf.tmpl |
 
@@ -128,15 +131,15 @@ Tmux does **not** have a theme — it uses the terminal's colors passively. Styl
 
 ## WSL Windows-Side Config Sync
 
-Alacritty runs on the Windows side but its config is symlinked into the WSL filesystem. Set up once with PowerShell (run as Administrator):
+WezTerm runs on the Windows side but its config is symlinked into the WSL filesystem. Set up once with PowerShell (run as Administrator):
 
 ```powershell
 New-Item -ItemType SymbolicLink `
-  -Path "$env:APPDATA\alacritty" `
-  -Target "\\wsl$\Ubuntu\home\erik\.config\alacritty"
+  -Path "$env:USERPROFILE\.config\wezterm" `
+  -Target "\\wsl$\Ubuntu\home\erik\.config\wezterm"
 ```
 
-After that, chezmoi managing `~/.config/alacritty/` in WSL is sufficient.
+After that, chezmoi managing `~/.config/wezterm/` in WSL is sufficient.
 
 ## Private / Machine-Specific Config
 
