@@ -4,7 +4,14 @@ Cross-platform dotfiles managed by **chezmoi**, targeting macOS (home) and WSL U
 
 ## Philosophy
 
-Follow DHH's **Omarchy/Omadots** conventions wherever possible — don't reinvent the wheel. Before adding or changing config, check the latest [Omarchy repo](https://github.com/basecamp/omarchy) and [Omadots docs](https://learn.omacom.io/2/the-omarchy-manual/65/dotfiles) for how they handle it. Watch for **Omamac** (macOS-specific variant) at [omamac.org](https://www.omamac.org/) — may adopt when released.
+Follow DHH's Omarchy conventions wherever possible — don't reinvent the wheel. Before adding or changing config, check these repos for how they handle it:
+
+| Repo | Description |
+|---|---|
+| [basecamp/omarchy](https://github.com/basecamp/omarchy) | Core Linux setup — primary reference |
+| [omacom-io/omadots](https://github.com/omacom-io/omadots) | Shared dotfile configs |
+| [omacom-io/omarchy-zsh](https://github.com/omacom-io/omarchy-zsh) | Zsh config |
+| [omacom-io/omamac](https://github.com/omacom-io/omamac) | macOS-specific variant — primary reference for Mac |
 
 ## Environments
 
