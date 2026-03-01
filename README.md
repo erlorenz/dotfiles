@@ -17,6 +17,12 @@ New-Item -ItemType SymbolicLink `
 
 After that, chezmoi managing `~/.config/alacritty/` in WSL is all that's needed — Windows picks it up automatically.
 
+The theme files are not managed by chezmoi — clone them once per machine:
+
+```bash
+git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+```
+
 ## Bootstrap
 
 ### 1. Install chezmoi

@@ -20,4 +20,4 @@ history = 50000
 
 # Theme: Tokyo Night
 [general]
-import = ["~/.config/alacritty/themes/themes/tokyo-night.toml"]
+import = ["~/.config/alacritty/themes/themes/tokyo_night.toml"]
