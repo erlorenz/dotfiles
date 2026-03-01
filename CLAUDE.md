@@ -19,8 +19,7 @@ Follow DHH's **Omarchy/Omadots** conventions wherever possible — don't reinven
 
 | Tool | Role | Notes |
 |---|---|---|
-| **Wezterm** | Terminal emulator | Cross-platform (Lua config). Keep minimal — tmux handles splits/tabs |
-| **Alacritty** | Terminal emulator | Maintain matching config alongside wezterm |
+| **Alacritty** | Terminal emulator | Synced with Omarchy/Omadots/Omamac. Keep minimal — tmux handles splits/tabs |
 | **Tmux** | Multiplexer | Primary window/split/tab manager. Prefix: `Ctrl+Space` |
 | **Neovim + LazyVim** | Editor | Minimal divergence from Omarchy defaults. Leader: `Space` |
 | **VSCode** | IDE | With AI extensions, used alongside terminal workflow |
@@ -90,13 +89,9 @@ Use `.chezmoiignore` to skip files per platform:
 ├── .chezmoiignore                     # Platform-conditional ignores
 ├── .chezmoitemplates/                 # Shared Go template partials
 ├── dot_zshenv.tmpl                    # → ~/.zshenv
-├── run_onchange_windows-alacritty.sh.tmpl  # WSL: syncs Alacritty config to Windows side
-├── run_onchange_windows-wezterm.sh.tmpl    # WSL: syncs Wezterm config to Windows side
 ├── dot_config/
 │   ├── alacritty/
 │   │   └── alacritty.toml.tmpl        # Terminal config (minimal — tmux does the work)
-│   ├── wezterm/
-│   │   └── wezterm.lua.tmpl           # Terminal config (minimal — tmux does the work)
 │   ├── tmux/
 │   │   └── tmux.conf.tmpl            # Primary multiplexer config
 │   ├── nvim/                          # LazyVim — track Omarchy closely
@@ -109,7 +104,15 @@ Use `.chezmoiignore` to skip files per platform:
 
 ## WSL Windows-Side Config Sync
 
-On WSL, terminal emulators (Wezterm, Alacritty) run on the Windows side but their configs live in the Linux filesystem. Chezmoi `run_onchange_` scripts automatically copy configs to the Windows AppData paths when they change. These scripts are conditionally skipped on macOS via `.chezmoiignore`.
+Alacritty runs on the Windows side but its config is symlinked into the WSL filesystem. Set up once with PowerShell (run as Administrator):
+
+```powershell
+New-Item -ItemType SymbolicLink `
+  -Path "$env:APPDATA\alacritty" `
+  -Target "\\wsl$\Ubuntu\home\erik\.config\alacritty"
+```
+
+After that, chezmoi managing `~/.config/alacritty/` in WSL is sufficient.
 
 ## SSH / 1Password
 
