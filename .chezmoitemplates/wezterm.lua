@@ -28,4 +28,13 @@ config.window_padding = {
 }
 config.enable_scroll_bar = true
 config.scrollback_lines = 50000
+
+-- Explicitly send xterm-style sequences for triple-modifier arrow keys (tmux resize)
+config.keys = {
+  { key = "LeftArrow",  mods = "CTRL|ALT|SHIFT", action = wezterm.action.SendString("\x1b[1;8D") },
+  { key = "RightArrow", mods = "CTRL|ALT|SHIFT", action = wezterm.action.SendString("\x1b[1;8C") },
+  { key = "UpArrow",    mods = "CTRL|ALT|SHIFT", action = wezterm.action.SendString("\x1b[1;8A") },
+  { key = "DownArrow",  mods = "CTRL|ALT|SHIFT", action = wezterm.action.SendString("\x1b[1;8B") },
+}
+
 return config
