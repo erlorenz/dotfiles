@@ -28,5 +28,4 @@ config.window_padding = {
 }
 config.enable_scroll_bar = true
 config.scrollback_lines = 50000
-
 return config
