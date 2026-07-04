@@ -63,6 +63,55 @@ native WezTerm — no tmux, no translation layers.
   interop is off, or WezTerm isn't on the Windows PATH — reinstall with
   winget and restart WSL (`wsl --shutdown`).
 
+## 1Password SSH agent in WSL (set up when first needed)
+
+Skip 1Password's official suggestion (aliasing `ssh` → `ssh.exe`): tools
+that don't shell out to an `ssh` binary — kamal (Ruby net-ssh), some rsync/
+scp wrappers — never see the Windows agent and silently fail. The bridge
+below gives WSL a real `$SSH_AUTH_SOCK`, so *everything* works: one-time
+setup, invisible afterwards, keys stay in 1Password with Windows Hello.
+
+1. **Windows**: 1Password → Settings → Developer → enable **SSH agent**.
+2. **Windows**: install npiperelay and make sure it's on the Windows PATH
+   (`winget install albertony.npiperelay` or scoop/choco).
+3. **WSL**: `sudo apt install -y socat` (systemd is on by default in
+   current Ubuntu WSL; if not, add `[boot] systemd=true` to /etc/wsl.conf).
+4. **WSL**: create `~/.config/systemd/user/1password-agent.service`:
+
+   ```ini
+   [Unit]
+   Description=Bridge Windows 1Password SSH agent into WSL
+
+   [Service]
+   ExecStartPre=/bin/rm -f %t/1password-agent.sock
+   ExecStart=/usr/bin/socat UNIX-LISTEN:%t/1password-agent.sock,fork \
+     EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork
+   Restart=always
+
+   [Install]
+   WantedBy=default.target
+   ```
+
+   Then: `systemctl --user enable --now 1password-agent`
+5. **WSL**: point the shell at it in `~/.config/zsh/local.zsh` (machine-local,
+   untracked — exactly what that hook is for):
+
+   ```sh
+   export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/1password-agent.sock
+   ```
+
+Verify with `ssh-add -l` (should list your 1Password keys and trigger a
+Windows Hello prompt). If this ever feels like too much, the pragmatic
+fallback is a plain Linux keypair generated in WSL — less elegant, zero
+moving parts.
+
+## GitHub auth
+
+`gh auth login` **per machine** — tokens live in the OS keyring on mac and
+in `~/.config/gh/hosts.yml` (mode 600) on WSL. Never tracked in dotfiles
+(public repo). Git pushes already route through gh via the credential
+helper in `~/.config/git/config`.
+
 ## SSH dev box (future)
 
 Same as WSL steps minus everything Windows: apt prereqs → yadm → clone.
