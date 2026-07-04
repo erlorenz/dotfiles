@@ -41,12 +41,12 @@ vim.o.inccommand = "split"  -- live preview of :s/substitutions in a split
 
 -- === Completion ===========================================================
 
--- How the completion popup behaves (used by native LSP completion, lsp.lua):
+-- blink.cmp (lsp.lua) draws its own menu and ignores this; it still shapes
+-- the rare native ins-completion contexts (<C-x> chords):
 --   menuone  - show the menu even for a single match
---   noselect - don't preselect anything; typing keeps narrowing (VS Code-ish)
---   fuzzy    - fuzzy-match against typed text, like VS Code's suggest filter
---   popup    - show docs for the highlighted item in a side popup
-vim.o.completeopt = "menuone,noselect,fuzzy,popup"
+--   noselect - don't preselect anything; typing keeps narrowing
+--   fuzzy    - fuzzy-match against typed text
+vim.o.completeopt = "menuone,noselect,fuzzy"
 
 -- === System integration ===================================================
 

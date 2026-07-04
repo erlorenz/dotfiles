@@ -42,10 +42,11 @@ WSL machine, see [WORK-SETUP.md](WORK-SETUP.md).
 ## Neovim philosophy
 
 Minimal and owned: every option is commented, plugins are added only on felt
-need (most future wants have a one-line `mini.*` module). Completion, LSP,
-and the plugin manager are all Neovim-native — no Mason (LSP servers come
-from mise so agents can use them too), no completion engine, no lazy.nvim.
-`Ctrl+Space` triggers completion, as decades of VS Code demand.
+need (most future wants have a one-line `mini.*` module). LSP and the plugin
+manager are Neovim-native — no Mason (LSP servers come from mise so agents
+can use them too), no lazy.nvim. Completion is blink.cmp (the one place
+"top-notch" beat "built-in"). `Ctrl+Space` triggers completion, as decades
+of VS Code demand.
 
 ## Layouts (inside WezTerm, replaces tmux scripts)
 

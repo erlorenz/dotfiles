@@ -58,6 +58,13 @@ vim.pack.add({
   -- work; this ships tested configs for hundreds of servers). Used by lsp.lua.
   "https://github.com/neovim/nvim-lspconfig",
 
+  -- Completion engine (configured in lsp.lua with the rest of the LSP
+  -- stack). Chosen over the native vim.lsp.completion for the full package:
+  -- SIMD fuzzy matching, snippets, signature help, better sorting.
+  -- Pinned to tagged releases so it fetches its prebuilt Rust matcher
+  -- instead of needing a nightly cargo build.
+  { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1.*") },
+
   -- Press a prefix key (<Space>, g, [, z...) and pause: a panel shows every
   -- continuation, with the `desc` strings from our keymaps. The config
   -- teaches itself.

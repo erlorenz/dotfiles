@@ -35,6 +35,7 @@ bat = "latest"         # cat with syntax highlighting
 jq = "latest"          # JSON wrangling
 gh = "latest"          # GitHub CLI
 lazygit = "latest"     # git TUI
+"npm:hunkdiff" = "latest" # hunk — live diff review pane for agent changes
 starship = "latest"    # prompt
 tree-sitter = "latest" # CLI needed by nvim-treesitter (main) to build parsers
 sops = "latest"        # secrets
