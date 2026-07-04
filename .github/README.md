@@ -22,7 +22,7 @@ uncommitted or unpushed — that's the reminder to `dotsync`.
 
 ```sh
 # prereqs — macOS: brew;  Linux/WSL: sudo apt install -y git curl zsh build-essential unzip
-yadm clone git@github.com:erlorenz/dotfiles.git   # bootstrap runs automatically
+yadm clone --bootstrap https://github.com/erlorenz/dotfiles.git
 ```
 
 Bootstrap installs mise, all global tools + LSP servers, zsh plugins, and

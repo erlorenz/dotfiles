@@ -22,10 +22,11 @@ curl -fsSLo ~/.local/bin/yadm --create-dirs https://github.com/yadm-dev/yadm/raw
 chmod +x ~/.local/bin/yadm
 export PATH="$HOME/.local/bin:$PATH"
 
-# SSH key for GitHub (or use HTTPS + gh auth login after bootstrap)
-ssh-keygen -t ed25519 -C "erik@eriklorenz.dev"   # add to GitHub
+# repo is public: clone over HTTPS, no keys needed; --bootstrap runs setup
+yadm clone --bootstrap https://github.com/erlorenz/dotfiles.git
 
-yadm clone git@github.com:erlorenz/dotfiles.git   # bootstrap runs automatically
+# then authenticate for pushing (gh was installed by bootstrap):
+gh auth login
 ```
 
 yadm detects WSL and symlinks `os.zsh -> os.zsh##os.WSL` automatically.
