@@ -46,6 +46,13 @@ vim.pack.add({
   -- delete = dd, create = o + type a name, then :w applies it all
   "https://github.com/stevearc/oil.nvim",
 
+  -- File tree sidebar (VS Code explorer). Complements oil: the tree is for
+  -- exploring project structure, oil for bulk filesystem edits.
+  -- devicons provides the filetype icons (WezTerm's built-in Nerd Font
+  -- fallback renders them without changing fonts).
+  "https://github.com/nvim-tree/nvim-web-devicons",
+  "https://github.com/nvim-tree/nvim-tree.lua",
+
   -- LSP server definitions (data only — nvim's native LSP client does the
   -- work; this ships tested configs for hundreds of servers). Used by lsp.lua.
   "https://github.com/neovim/nvim-lspconfig",
@@ -124,3 +131,17 @@ require("oil").setup({
 -- "-" opens the parent directory of the current file (then "-" again keeps
 -- going up; <CR> enters a dir/file; edit the listing like text and :w)
 vim.keymap.set("n", "-", "<cmd>Oil<CR>", { desc = "File explorer (parent dir)" })
+
+-- === nvim-tree ============================================================
+
+require("nvim-tree").setup({
+  -- leave directory buffers to oil; the tree is purely the toggled sidebar
+  disable_netrw = false,
+  hijack_netrw = false,
+  view = { width = 32 },
+  filters = { dotfiles = false }, -- show hidden files (toggle in-tree with H)
+})
+-- <Space>e toggles the sidebar (VS Code Ctrl+Shift+E energy).
+-- Inside the tree: <CR> open, a create, r rename, d delete, x/c/p cut/copy/
+-- paste, R refresh, g? shows the full cheatsheet.
+vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "File tree" })

@@ -96,7 +96,41 @@ config.keys = {
 
   -- Copy mode (leader+[)
   { key = "[", mods = "LEADER", action = act.ActivateCopyMode },
+
+  -- Workspaces (~ tmux sessions), on the tmux muscle-memory keys:
+  -- leader+s  choose from a fuzzy list        (tmux: leader+s)
+  -- leader+$  rename current workspace        (tmux: leader+$)
+  -- leader+(/)  prev/next workspace           (tmux: leader+(/))
+  -- leader+W  create/switch to named workspace (type a new or existing name)
+  { key = "s", mods = "LEADER", action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES", title = "Workspaces" }) },
+  { key = "$", mods = "LEADER", action = act.PromptInputLine({
+    description = "Rename workspace:",
+    action = wezterm.action_callback(function(_, _, line)
+      if line and line ~= "" then
+        wezterm.mux.rename_workspace(wezterm.mux.get_active_workspace(), line)
+      end
+    end),
+  }) },
+  { key = "(", mods = "LEADER", action = act.SwitchWorkspaceRelative(-1) },
+  { key = ")", mods = "LEADER", action = act.SwitchWorkspaceRelative(1) },
+  { key = "W", mods = "LEADER", action = act.PromptInputLine({
+    description = "Workspace name:",
+    action = wezterm.action_callback(function(window, pane, line)
+      if line and line ~= "" then
+        window:perform_action(act.SwitchToWorkspace({ name = line }), pane)
+      end
+    end),
+  }) },
 }
+
+-- Show the active workspace in the top-right, so you always know which
+-- "session" you're in (only interesting once you have more than one)
+wezterm.on("update-status", function(window, _)
+  window:set_right_status(wezterm.format({
+    { Foreground = { Color = "#7aa2f7" } },
+    { Text = " " .. window:active_workspace() .. "  " },
+  }))
+end)
 
 -- Copy mode vi keybindings
 config.key_tables = {
