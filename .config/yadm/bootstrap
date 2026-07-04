@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# yadm bootstrap — runs automatically after `yadm clone` on a new machine.
+# Safe to re-run any time: every step is idempotent.
+#
+# Machine prerequisites (the only manual installs, ever):
+#   macOS:      brew (https://brew.sh)
+#   WSL/Linux:  sudo apt install -y git curl zsh build-essential unzip
+set -euo pipefail
+
+say() { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
+
+# --- 0. Sanity: required system commands -----------------------------------
+missing=""
+for cmd in git curl zsh cc; do
+  command -v "$cmd" >/dev/null 2>&1 || missing="$missing $cmd"
+done
+if [ -n "$missing" ]; then
+  echo "Missing system packages:$missing"
+  echo "  macOS: xcode-select --install && install brew"
+  echo "  Linux: sudo apt install -y git curl zsh build-essential unzip"
+  exit 1
+fi
+
+# --- 1. mise (the tool manager everything else flows from) -----------------
+if ! command -v mise >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/mise" ]; then
+  say "Installing mise"
+  if [ "$(uname -s)" = "Darwin" ] && command -v brew >/dev/null 2>&1; then
+    brew install mise
+  else
+    curl -fsSL https://mise.run | sh
+  fi
+fi
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+
+# --- 2. Global tools (from the just-synced ~/.config/mise/config.toml) -----
+say "Installing global mise tools (runtimes, CLIs, LSP servers)"
+mise trust "$HOME/.config/mise/config.toml" >/dev/null 2>&1 || true
+mise install --yes
+
+# --- 3. zsh plugins (sourced by .zshrc from this fixed path) ----------------
+PLUGINS="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
+if [ ! -d "$PLUGINS/zsh-autosuggestions" ]; then
+  say "Cloning zsh plugins"
+  mkdir -p "$PLUGINS"
+  git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions \
+    "$PLUGINS/zsh-autosuggestions"
+fi
+
+# --- 4. Neovim plugins + treesitter parsers (versions from the lockfile) ---
+say "Installing neovim plugins (headless first boot)"
+mise exec -- nvim --headless "+lua vim.schedule(function() vim.cmd('quitall!') end)" || \
+  echo "  (nvim first boot reported an issue — open nvim and check :messages)"
+
+# --- 5. Default shell -------------------------------------------------------
+ZSH_PATH="$(command -v zsh)"
+if [ "${SHELL:-}" != "$ZSH_PATH" ]; then
+  say "Setting default shell to zsh (may prompt for your password)"
+  grep -q "$ZSH_PATH" /etc/shells 2>/dev/null || echo "$ZSH_PATH" | sudo tee -a /etc/shells >/dev/null
+  chsh -s "$ZSH_PATH" || echo "  chsh failed — run manually: chsh -s $ZSH_PATH"
+fi
+
+say "Done. Open a new terminal (or run: exec zsh)"
+echo "  - dotfiles:  dots status | dotsync"
+echo "  - layouts:   dev [agent] | devall | swarm N cmd  (inside WezTerm)"

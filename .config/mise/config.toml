@@ -1,0 +1,44 @@
+# Global mise config — synced via dotfiles (yadm).
+#
+# The rule: if it should exist on a fresh dev box, it goes here.
+# OS package managers (brew/winget/apt) only handle GUI + system-level
+# things mise can't: WezTerm, OrbStack/Docker, build essentials.
+# Projects pin their own versions in a local mise.toml.
+
+[tools]
+# --- Runtimes (default versions; projects override locally) ---
+node = "24"
+deno = "latest"
+go = "latest"
+ruby = "latest"
+python = "latest"
+
+# --- Editor ---
+neovim = "latest"
+
+# --- Language servers ---
+# Installed globally (NOT via Mason) so they're on PATH for every consumer:
+# nvim, Claude Code's LSP integration, scripts.
+"go:golang.org/x/tools/gopls" = "latest"      # Go
+lua-language-server = "latest"                # Lua (nvim config)
+"npm:@vtsls/language-server" = "latest"       # TypeScript/JavaScript
+"npm:basedpyright" = "latest"                 # Python (npm build avoids the
+                                              # pipx/python bootstrap circle)
+
+# --- CLI tools ---
+zoxide = "latest"      # smarter cd (z)
+ripgrep = "latest"     # rg — also powers nvim grep pickers
+fd = "latest"          # friendlier find — powers file pickers
+eza = "latest"         # ls replacement
+fzf = "latest"         # fuzzy filter for shell history/files
+bat = "latest"         # cat with syntax highlighting
+jq = "latest"          # JSON wrangling
+gh = "latest"          # GitHub CLI
+lazygit = "latest"     # git TUI
+starship = "latest"    # prompt
+tree-sitter = "latest" # CLI needed by nvim-treesitter (main) to build parsers
+sops = "latest"        # secrets
+age = "latest"         # encryption backend for sops
+
+[settings]
+experimental = true

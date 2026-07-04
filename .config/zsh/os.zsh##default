@@ -1,0 +1,3 @@
+# Fallback for plain Linux (SSH dev boxes). yadm symlinks os.zsh -> this
+# file when no more specific alternate (os.Darwin / os.WSL) matches.
+# Nothing needed yet.

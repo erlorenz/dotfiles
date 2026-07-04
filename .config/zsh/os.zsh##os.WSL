@@ -1,0 +1,9 @@
+# WSL-specific interactive config.
+# yadm symlinks os.zsh -> this file on WSL machines (yadm reports os=WSL,
+# not Linux, when it detects WSL).
+
+# Open Windows Explorer at the current directory
+alias explorer='explorer.exe .'
+
+# Windows clipboard from the shell (nvim uses OSC52 instead, see options.lua)
+alias clip='clip.exe'

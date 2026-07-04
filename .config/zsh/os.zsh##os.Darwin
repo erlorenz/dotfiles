@@ -1,0 +1,5 @@
+# macOS-specific interactive config.
+# yadm symlinks os.zsh -> this file on Darwin machines (run `yadm alt`).
+
+# OrbStack: command-line tools and docker integration
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :
