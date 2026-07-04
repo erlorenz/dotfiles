@@ -4,9 +4,17 @@
       "rev": "eb60cc7b94c46005237fd34170d76f3a089a90aa",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
+    "mini.icons": {
+      "rev": "24dbea2195c477e57d581215839a6ab915f34b14",
+      "src": "https://github.com/nvim-mini/mini.icons"
+    },
     "mini.pick": {
       "rev": "8c1f75f8ddd8c9f75d07ed2ab5718d2c3cb65a66",
       "src": "https://github.com/nvim-mini/mini.pick"
+    },
+    "mini.statusline": {
+      "rev": "6a136236ec93090c820c1d2a6139aa053b2199c9",
+      "src": "https://github.com/nvim-mini/mini.statusline"
     },
     "nvim-lspconfig": {
       "rev": "d224a1920728ba129880efc700d4a0180ac4ecbb",
@@ -21,10 +29,6 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
-    "nvim-web-devicons": {
-      "rev": "dad71387de386a946b123079d0e53f23028f3abd",
-      "src": "https://github.com/nvim-tree/nvim-web-devicons"
-    },
     "oil.nvim": {
       "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
       "src": "https://github.com/stevearc/oil.nvim"
@@ -32,6 +36,10 @@
     "tokyonight.nvim": {
       "rev": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",
       "src": "https://github.com/folke/tokyonight.nvim"
+    },
+    "which-key.nvim": {
+      "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
+      "src": "https://github.com/folke/which-key.nvim"
     }
   }
 }

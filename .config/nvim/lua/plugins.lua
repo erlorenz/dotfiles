@@ -48,14 +48,23 @@ vim.pack.add({
 
   -- File tree sidebar (VS Code explorer). Complements oil: the tree is for
   -- exploring project structure, oil for bulk filesystem edits.
-  -- devicons provides the filetype icons (WezTerm's built-in Nerd Font
-  -- fallback renders them without changing fonts).
-  "https://github.com/nvim-tree/nvim-web-devicons",
   "https://github.com/nvim-tree/nvim-tree.lua",
+
+  -- Filetype icons for the tree, which-key, and statusline (WezTerm's
+  -- built-in Nerd Font fallback renders them without changing fonts)
+  "https://github.com/nvim-mini/mini.icons",
 
   -- LSP server definitions (data only — nvim's native LSP client does the
   -- work; this ships tested configs for hundreds of servers). Used by lsp.lua.
   "https://github.com/neovim/nvim-lspconfig",
+
+  -- Press a prefix key (<Space>, g, [, z...) and pause: a panel shows every
+  -- continuation, with the `desc` strings from our keymaps. The config
+  -- teaches itself.
+  "https://github.com/folke/which-key.nvim",
+
+  -- Minimal statusline (mode, git branch+diff, diagnostics, file, position)
+  "https://github.com/nvim-mini/mini.statusline",
 }, {
   -- don't prompt before the initial clone: this list is version-controlled,
   -- and a prompt would hang the headless bootstrap on a new machine
@@ -132,6 +141,12 @@ require("oil").setup({
 -- going up; <CR> enters a dir/file; edit the listing like text and :w)
 vim.keymap.set("n", "-", "<cmd>Oil<CR>", { desc = "File explorer (parent dir)" })
 
+-- === icons ================================================================
+
+require("mini.icons").setup()
+-- nvim-tree asks for nvim-web-devicons by name; mini.icons answers for it
+MiniIcons.mock_nvim_web_devicons()
+
 -- === nvim-tree ============================================================
 
 require("nvim-tree").setup({
@@ -145,3 +160,17 @@ require("nvim-tree").setup({
 -- Inside the tree: <CR> open, a create, r rename, d delete, x/c/p cut/copy/
 -- paste, R refresh, g? shows the full cheatsheet.
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "File tree" })
+
+-- === which-key ============================================================
+
+local wk = require("which-key")
+wk.setup({ delay = 400 }) -- ms of hesitation before the panel appears
+-- Name the keymap groups so the panel shows "g -> git" instead of "+prefix"
+wk.add({
+  { "<leader>g", group = "git" },
+})
+
+-- === mini.statusline ======================================================
+
+-- Also sets showmode off etc. (the statusline already shows the mode)
+require("mini.statusline").setup()
