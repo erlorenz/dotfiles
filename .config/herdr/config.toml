@@ -4,6 +4,8 @@
 # replaces WezTerm's native pane management + the old layouts.zsh helpers.
 #
 # Prefix is ctrl+b (same as tmux). Press  ctrl+b  then  ?  to see every binding.
+# Coexists with WezTerm's own muxing (moved to a ctrl+a leader) so you can A/B
+# both: ctrl+b = herdr, ctrl+a = WezTerm panes. See ../wezterm/wezterm.lua.
 #
 # We deliberately keep herdr's DEFAULTS everywhere except one thing: pane
 # splits. herdr ships `prefix v` / `prefix -`; we want core-tmux muscle memory:

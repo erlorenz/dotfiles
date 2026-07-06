@@ -39,13 +39,21 @@ config.window_padding = {
 config.enable_scroll_bar = true
 config.scrollback_lines = 50000
 
--- LEADER (Ctrl+B, 1 second timeout)
-config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
+-- LEADER (Ctrl+A, 1 second timeout).
+-- Moved off Ctrl+B so WezTerm's OWN muxing and herdr can coexist: herdr keeps
+-- its default Ctrl+B prefix, WezTerm muxing lives on Ctrl+A. Run herdr inside
+-- WezTerm and you can A/B the two — Ctrl+B drives herdr, Ctrl+A drives WezTerm.
+config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
 config.keys = {
-  -- Pane splits (leader)
-  { key = "h", mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-  { key = "v", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+  -- Ctrl+A is also shell "beginning of line" (emacs bindkey). leader+a sends a
+  -- literal Ctrl+A through, so double-tapping Ctrl+A still jumps to line start.
+  { key = "a", mods = "LEADER", action = act.SendKey({ key = "a", mods = "CTRL" }) },
+
+  -- Pane splits (leader) — core tmux bindings, matching herdr:
+  --   %  (shift+5) -> side-by-side panes     " (shift+') -> stacked panes
+  { key = "%", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+  { key = '"', mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
   { key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = false }) },
 
   -- Pane navigation (Ctrl+Alt+Arrows)
