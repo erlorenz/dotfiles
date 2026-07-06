@@ -1,20 +1,22 @@
 # herdr — tmux-like, agent-aware terminal multiplexer (https://herdr.dev).
-# A single rust binary that runs INSIDE your terminal (WezTerm here); it owns
-# panes/sessions and shows agent state (blocked/working/done/idle). This
-# replaces WezTerm's native pane management + the old layouts.zsh helpers.
+# Runs INSIDE WezTerm; owns panes/sessions and shows agent state.
 #
-# Prefix is ctrl+b (same as tmux). Press  ctrl+b  then  ?  to see every binding.
-# Coexists with WezTerm's own muxing (moved to a ctrl+a leader) so you can A/B
-# both: ctrl+b = herdr, ctrl+a = WezTerm panes. See ../wezterm/wezterm.lua.
+# herdr works with NO config file. This file sets NO overrides on purpose —
+# we're on herdr's shipped defaults for now. Kept as a documented placeholder
+# for future tweaks. Press  ctrl+b  then  ?  to see the live keymap.
 #
-# We deliberately keep herdr's DEFAULTS everywhere except one thing: pane
-# splits. herdr ships `prefix v` / `prefix -`; we want core-tmux muscle memory:
-#   prefix %  -> side-by-side panes   (what tmux calls a "vertical split")
-#   prefix "  -> stacked panes        (what tmux calls a "horizontal split")
-# On a US layout, % is shift+5 and " is shift+'.
+# Shipped defaults (for reference — these do NOT need to be declared):
+#   prefix                ctrl+b     (coexists with WezTerm's ctrl+a leader)
+#   split_vertical        prefix+v
+#   split_horizontal      prefix+minus
+#   focus pane l/d/u/r    prefix+h / prefix+j / prefix+k / prefix+l
+#   new tab               prefix+c
+#   new workspace         prefix+shift+n
+#   switch workspaces     prefix+w
+#   detach                prefix+q
+#   help (all bindings)   prefix+?
 #
-# NOTE: verify these key names against `ctrl+b ?` / the herdr config docs the
-# first time — this file was written from herdr's web docs, not a live binary.
-[keys]
-split_vertical   = "prefix+shift+5"   # %  (herdr default was: prefix+v)
-split_horizontal = "prefix+shift+'"   # "  (herdr default was: prefix+minus)
+# To override later, add a [keys] section — e.g. core-tmux-style splits:
+#   [keys]
+#   split_vertical   = "prefix+shift+5"   # %
+#   split_horizontal = "prefix+shift+'"   # "
