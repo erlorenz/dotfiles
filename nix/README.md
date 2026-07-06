@@ -28,6 +28,10 @@ Homebrew on mac (for casks), installs **Nix**, clones the repo to `~/github/erlo
 runs the switch, and installs Claude Code. The **system git** does the initial
 clone; Nix then installs the updated git you actually use.
 
+Then **check it worked**: `cd ~/github/erlorenz/dotfiles/nix && ./verify.sh` —
+✓/✗ per layer (symlinks, OS-conditional zsh, Nix CLIs, neovim 0.12, herdr, mise
+runtimes, macOS casks). It exits non-zero if anything failed.
+
 Day-to-day after that: edit configs live in `~/github/erlorenz/dotfiles`; run `./rebuild.sh`
 only when you change **packages** or the Nix files; `nix flake update` +
 `./rebuild.sh` to update everything (deliberate, pinned via `flake.lock`).
@@ -100,6 +104,7 @@ you can A/B both with identical split keys.
 | `darwin.nix` | macOS system + Homebrew casks |
 | `install.sh` | fresh-machine bootstrap (installs Nix, clones, switches) |
 | `rebuild.sh` | apply changes / updates |
+| `verify.sh` | post-install sanity check — ✓/✗ per layer, exits non-zero on failure |
 
 ## Before first run — check these
 
