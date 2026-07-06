@@ -13,6 +13,24 @@ USER_NAME="erik"
 say() { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
 os="$(uname -s)"
 
+# --- 0. yadm migration preflight -------------------------------------------
+# If this machine still runs yadm, its tracked files are REAL files in $HOME
+# and home-manager won't overwrite them. The switch backs them up to *.backup
+# (backupFileExtension on darwin, `-b backup` on Linux) rather than deleting —
+# but first make sure yadm has NOTHING uncommitted, so no local edit is lost.
+if command -v yadm >/dev/null 2>&1 && yadm rev-parse HEAD >/dev/null 2>&1; then
+  say "Existing yadm setup detected"
+  if [ -n "$(yadm status --porcelain 2>/dev/null)" ]; then
+    echo "  yadm has UNCOMMITTED changes — sync them first so nothing is lost:"
+    echo "      yadm add -u && yadm commit -m sync && yadm push"
+    echo "  then re-run this script."
+    exit 1
+  fi
+  echo "  yadm is clean (all tracked files are safe in the repo)."
+  echo "  Conflicting files will be renamed to *.backup during the switch."
+  echo "  After you confirm Nix works, decommission yadm — see nix/README.md."
+fi
+
 # --- 1. Ensure git + curl (needed only to fetch Nix and clone the repo) ----
 # macOS: git/curl ship with the Xcode Command Line Tools (first `git` prompts).
 # Ubuntu/WSL: minimal images often have NO git — install it (+ xz for Nix).

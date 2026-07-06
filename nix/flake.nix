@@ -43,6 +43,9 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          # Migrating from yadm: back up any pre-existing real file (that yadm
+          # laid down) to *.backup instead of erroring on the first switch.
+          home-manager.backupFileExtension = "backup";
           home-manager.users.${user} = import ./home.nix;
           home-manager.extraSpecialArgs = { inherit user inputs; };
         }

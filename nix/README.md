@@ -32,10 +32,33 @@ Day-to-day after that: edit configs live in `~/github/erlorenz/dotfiles`; run `.
 only when you change **packages** or the Nix files; `nix flake update` +
 `./rebuild.sh` to update everything (deliberate, pinned via `flake.lock`).
 
-> ⚠️ **Testing on a machine that still has yadm files?** home-manager refuses to
-> clobber existing dotfiles. `install.sh` passes `-b backup` on Linux (renames
-> them to `*.backup`); on macOS, move the yadm-managed files aside first, or
-> test in a fresh VM. Don't run yadm and Nix over the same `$HOME` files at once.
+## Migrating a machine that already runs yadm
+
+yadm checks its tracked files out as **real files** in `$HOME`; home-manager
+wants to put **symlinks** at those same paths and won't clobber real files.
+Nothing is at risk — every tracked file's content is in this repo — so the
+migration is just "get the real files out of the way, then symlink":
+
+1. **Sync yadm first** (protects any local-only edits). `install.sh` refuses to
+   proceed if yadm is dirty:
+   ```sh
+   yadm status && yadm add -u && yadm commit -m sync && yadm push   # if needed
+   ```
+2. **Run `install.sh`.** The switch renames each conflicting file to `*.backup`
+   (via `backupFileExtension` on macOS, `-b backup` on Linux) and drops the
+   symlink in its place. Non-destructive.
+3. **Verify** a new shell, `nvim`, WezTerm, etc. work off the symlinks
+   (`ls -la ~/.zshenv ~/.config/nvim` should show `-> …/github/erlorenz/dotfiles/…`).
+4. **Decommission yadm** so it stops tracking `$HOME` and nudging:
+   ```sh
+   rm -rf "$(yadm introspect repo)"     # removes yadm's git repo, NOT your files
+   rm -f  ~/.zshenv.backup ~/.config/**/*.backup   # once you're happy
+   ```
+   Leftover yadm-only files (e.g. the `os.zsh##os.*` alternates) can be deleted
+   too — the Nix setup picks the OS file via a conditional, not filename tags.
+   Your `~/.config/zsh/.zsh_history` is untouched by all of this.
+
+> Don't run yadm and Nix over the same `$HOME` at once — pick one per machine.
 
 ## Who owns what (classes of citizen)
 
