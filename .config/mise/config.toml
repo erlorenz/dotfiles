@@ -43,6 +43,7 @@ starship = "latest"    # prompt
 tree-sitter = "latest" # CLI needed by nvim-treesitter (main) to build parsers
 sops = "latest"        # secrets
 age = "latest"         # encryption backend for sops
+herdr = "latest"
 
 [settings]
 experimental = true
