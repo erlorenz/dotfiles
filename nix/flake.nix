@@ -18,9 +18,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # herdr multiplexer — its own flake (not in nixpkgs). No `nixpkgs.follows`:
+    # herdr may not expose a nixpkgs input, and forcing follows would error.
+    herdr.url = "github:ogulcancelik/herdr";
   };
 
-  outputs = { self, nixpkgs, nix-darwin, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, ... }:
   let
     user = "erik";
   in
@@ -32,7 +36,7 @@
     # just has to match the --flake .#mac in rebuild.sh, regardless of hostname.
     darwinConfigurations."mac" = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin"; # Intel Mac: "x86_64-darwin"
-      specialArgs = { inherit user; };
+      specialArgs = { inherit user inputs; };
       modules = [
         ./darwin.nix
         home-manager.darwinModules.home-manager
@@ -40,7 +44,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.${user} = import ./home.nix;
-          home-manager.extraSpecialArgs = { inherit user; };
+          home-manager.extraSpecialArgs = { inherit user inputs; };
         }
       ];
     };
@@ -51,7 +55,7 @@
     # Ubuntu, home-manager standalone manages the whole user environment.
     homeConfigurations.${user} = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages."x86_64-linux"; # ARM box: "aarch64-linux"
-      extraSpecialArgs = { inherit user; };
+      extraSpecialArgs = { inherit user inputs; };
       modules = [ ./home.nix ];
     };
   };

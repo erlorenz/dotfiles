@@ -42,28 +42,31 @@ only when you change **packages** or the Nix files; `nix flake update` +
 | Class | Owner | Where |
 |---|---|---|
 | Agnostic CLI tools, always-fresh (rg, fd, eza, az, gh, doctl…) | **Nix** | `home.nix` `home.packages` |
+| Editor (neovim) + multiplexer (herdr) | **Nix** | `home.nix` (herdr via its own flake input) |
 | Language runtimes you version (go, node, python) | **mise** | `~/.config/mise/config.toml` |
-| LSP servers, neovim, herdr, hunkdiff | **mise** | same |
+| LSP servers, hunkdiff | **mise** | same |
 | Per-project tool pins (e.g. Business Central AL tools) | **mise** | project `mise.toml` |
 | macOS GUI apps (WezTerm, OrbStack, Chrome, …) | **Homebrew cask** | `darwin.nix`, declared |
 | Windows-side WezTerm (work laptop) | **winget** | outside Nix — see `../.github/WORK-SETUP.md` |
 | Claude Code (self-updating) | **its own installer** | `install.sh` |
 
-### What stays in mise (do NOT move to Nix)
+### What stays in mise
 
-Runtimes, LSP servers, **neovim** (your config needs 0.12's `vim.pack`; mise
-tracks that; nixpkgs may lag), **herdr**, and `npm:hunkdiff`. When you adopt
-Nix, delete only the *agnostic CLI* lines from `mise/config.toml` (rg, fd, eza,
-bat, fzf, zoxide, jq, gh, lazygit, starship, tree-sitter, sops, age) — they now
-come from Nix.
+Language **runtimes** (go/node/python/ruby/deno), **LSP servers**, and
+`npm:hunkdiff`. Everything else — agnostic CLIs, **neovim**, and **herdr** — now
+comes from Nix. neovim needs 0.12+ for `vim.pack`; nixpkgs-unstable should have
+it, but check `nvim --version` on first build and fall back to the
+neovim-nightly overlay if it lags.
 
 ## Terminal & multiplexer
 
 **WezTerm stays** as the terminal *emulator* (the GUI window). **herdr** is the
 tmux-like, agent-aware *multiplexer* that runs inside it and owns panes/sessions
-— replacing WezTerm's native panes and the old `layouts.zsh` helpers. herdr is
-installed via mise; its config is `../.config/herdr/config.toml` (we keep herdr
-defaults except pane splits, rebound to core-tmux `%` and `"`).
+— replacing WezTerm's native panes and the old `layouts.zsh` helpers. herdr
+comes from Nix (its own flake input); its config is `../.config/herdr/config.toml`
+(herdr defaults except pane splits, rebound to core-tmux `%` and `"`). WezTerm's
+own muxing stays available on a `Ctrl+A` leader (herdr is `Ctrl+B`) so you can
+A/B both.
 
 ## Files
 

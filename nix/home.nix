@@ -5,12 +5,12 @@
 # The "classes of citizen" — who owns what:
 #   • Nix (this file)  — agnostic CLI tools you always want fresh, never
 #                        versioned per project (rg, fd, az, gh, ...).
-#   • mise (~/.config/mise/config.toml, symlinked below, UNCHANGED) — language
-#                        RUNTIMES you version (go/node/python), LSP servers,
-#                        neovim, herdr, hunkdiff, and per-project tool pins.
+#   • mise (~/.config/mise/config.toml, symlinked below) — language RUNTIMES
+#                        you version (go/node/python), LSP servers, hunkdiff,
+#                        and per-project tool pins.
 #   • Homebrew casks (darwin.nix) — macOS GUI apps.
 #   • Claude Code — its own self-updating installer (see install.sh).
-{ config, pkgs, lib, user, ... }:
+{ config, pkgs, lib, user, inputs, ... }:
 let
   # The repo is cloned here by install.sh; out-of-store symlinks point at it so
   # editing a config in ~/dotfiles is instantly live (no rebuild for a keymap).
@@ -32,6 +32,10 @@ in
   home.packages = with pkgs; [
     # --- shell + login ---
     zsh              # the shell itself (rc files are symlinked below, not generated)
+
+    # --- editor (moved here from mise) ---
+    neovim           # needs 0.12+ for vim.pack — verify `nvim --version` on first
+                     # build; if nixpkgs lags, add the neovim-nightly-overlay input
 
     # --- file / search / nav (were in mise) ---
     ripgrep          # rg — also powers nvim grep pickers
@@ -64,6 +68,10 @@ in
     # --- misc suggested ---
     btop             # nicer top / system monitor  (drop if unwanted)
   ]
+  # herdr — tmux-like agent multiplexer, from its OWN flake (not in nixpkgs).
+  # Verify the output attr on first build: `nix run github:ogulcancelik/herdr`
+  # implies packages.<system>.default exists.
+  ++ [ inputs.herdr.packages.${pkgs.system}.default ]
   # tailscale CLI: Linux only. On macOS the Tailscale.app cask (darwin.nix)
   # ships its own CLI, so installing it here too would collide on PATH.
   ++ lib.optionals pkgs.stdenv.isLinux [
