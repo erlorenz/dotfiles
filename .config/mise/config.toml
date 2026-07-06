@@ -36,6 +36,7 @@ jq = "latest"          # JSON wrangling
 gh = "latest"          # GitHub CLI
 lazygit = "latest"     # git TUI
 "npm:hunkdiff" = "latest" # hunk — live diff review pane for agent changes
+herdr = "latest"          # tmux-like, agent-aware terminal multiplexer (runs in wezterm)
 starship = "latest"    # prompt
 tree-sitter = "latest" # CLI needed by nvim-treesitter (main) to build parsers
 sops = "latest"        # secrets

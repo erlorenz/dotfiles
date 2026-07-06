@@ -1,0 +1,18 @@
+# herdr — tmux-like, agent-aware terminal multiplexer (https://herdr.dev).
+# A single rust binary that runs INSIDE your terminal (WezTerm here); it owns
+# panes/sessions and shows agent state (blocked/working/done/idle). This
+# replaces WezTerm's native pane management + the old layouts.zsh helpers.
+#
+# Prefix is ctrl+b (same as tmux). Press  ctrl+b  then  ?  to see every binding.
+#
+# We deliberately keep herdr's DEFAULTS everywhere except one thing: pane
+# splits. herdr ships `prefix v` / `prefix -`; we want core-tmux muscle memory:
+#   prefix %  -> side-by-side panes   (what tmux calls a "vertical split")
+#   prefix "  -> stacked panes        (what tmux calls a "horizontal split")
+# On a US layout, % is shift+5 and " is shift+'.
+#
+# NOTE: verify these key names against `ctrl+b ?` / the herdr config docs the
+# first time — this file was written from herdr's web docs, not a live binary.
+[keys]
+split_vertical   = "prefix+shift+5"   # %  (herdr default was: prefix+v)
+split_horizontal = "prefix+shift+'"   # "  (herdr default was: prefix+minus)
