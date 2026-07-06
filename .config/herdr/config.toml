@@ -1,22 +1,22 @@
 # herdr — tmux-like, agent-aware terminal multiplexer (https://herdr.dev).
 # Runs INSIDE WezTerm; owns panes/sessions and shows agent state.
+# Prefix is ctrl+b (coexists with WezTerm's ctrl+a leader). ctrl+b then ? = help.
 #
-# herdr works with NO config file. This file sets NO overrides on purpose —
-# we're on herdr's shipped defaults for now. Kept as a documented placeholder
-# for future tweaks. Press  ctrl+b  then  ?  to see the live keymap.
+# Only pane splits are overridden — to CORE-TMUX %/" so herdr matches WezTerm's
+# splits (WezTerm mux is on ctrl+a, same %/"). Everything else stays default.
 #
-# Shipped defaults (for reference — these do NOT need to be declared):
-#   prefix                ctrl+b     (coexists with WezTerm's ctrl+a leader)
-#   split_vertical        prefix+v
-#   split_horizontal      prefix+minus
+# NOTE: verify these key names with `ctrl+b ?` on first run — written from
+# herdr's web docs, not a live binary. If a split goes the wrong direction,
+# swap the two lines. If the shift chords don't register, try "prefix+percent"
+# / "prefix+quote". These REPLACE the defaults, so prefix+v / prefix+minus no
+# longer split once this is active.
+[keys]
+split_vertical   = "prefix+shift+5"   # %  side-by-side (default was prefix+v)
+split_horizontal = "prefix+shift+'"   # "  stacked      (default was prefix+minus)
+
+# Other shipped defaults, for reference (not overridden here):
 #   focus pane l/d/u/r    prefix+h / prefix+j / prefix+k / prefix+l
 #   new tab               prefix+c
 #   new workspace         prefix+shift+n
 #   switch workspaces     prefix+w
 #   detach                prefix+q
-#   help (all bindings)   prefix+?
-#
-# To override later, add a [keys] section — e.g. core-tmux-style splits:
-#   [keys]
-#   split_vertical   = "prefix+shift+5"   # %
-#   split_horizontal = "prefix+shift+'"   # "

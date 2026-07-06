@@ -64,9 +64,9 @@ neovim-nightly overlay if it lags.
 tmux-like, agent-aware *multiplexer* that runs inside it and owns panes/sessions
 — replacing WezTerm's native panes and the old `layouts.zsh` helpers. herdr
 comes from Nix (its own flake input); its config is `../.config/herdr/config.toml`
-— currently a no-op placeholder, so herdr runs on its **shipped defaults**
-(splits on `prefix+v` / `prefix+minus`). WezTerm's own muxing stays available on
-a `Ctrl+A` leader (herdr is `Ctrl+B`) so you can A/B both.
+— defaults except pane splits, overridden to core-tmux `%` / `"` to match
+WezTerm. WezTerm's own muxing stays on a `Ctrl+A` leader (herdr is `Ctrl+B`) so
+you can A/B both with identical split keys.
 
 ## Files
 

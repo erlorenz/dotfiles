@@ -50,7 +50,7 @@ config.keys = {
   -- literal Ctrl+A through, so double-tapping Ctrl+A still jumps to line start.
   { key = "a", mods = "LEADER", action = act.SendKey({ key = "a", mods = "CTRL" }) },
 
-  -- Pane splits (leader) — core tmux bindings (herdr is on its own defaults):
+  -- Pane splits (leader) — core tmux bindings, matching herdr's overrides:
   --   %  (shift+5) -> side-by-side panes     " (shift+') -> stacked panes
   { key = "%", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
   { key = '"', mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
