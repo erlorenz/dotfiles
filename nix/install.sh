@@ -7,7 +7,7 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/erlorenz/dotfiles.git"
-REPO_DIR="$HOME/dotfiles"
+REPO_DIR="$HOME/github/erlorenz/dotfiles"
 USER_NAME="erik"
 
 say() { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
@@ -50,6 +50,7 @@ fi
 # --- 3. Clone the dotfiles repo (system git does this; Nix git takes over) --
 if [ ! -d "$REPO_DIR/.git" ]; then
   say "Cloning dotfiles -> $REPO_DIR"
+  mkdir -p "$(dirname "$REPO_DIR")"   # ensure ~/github/erlorenz exists
   git clone "$REPO_URL" "$REPO_DIR"
 fi
 

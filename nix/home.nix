@@ -13,8 +13,9 @@
 { config, pkgs, lib, user, inputs, ... }:
 let
   # The repo is cloned here by install.sh; out-of-store symlinks point at it so
-  # editing a config in ~/dotfiles is instantly live (no rebuild for a keymap).
-  repo = "${config.home.homeDirectory}/dotfiles";
+  # editing a config in ~/github/erlorenz/dotfiles is instantly live (no rebuild).
+  # Matches the ~/github/<org>/<repo> layout used for project repos too.
+  repo = "${config.home.homeDirectory}/github/erlorenz/dotfiles";
   link = config.lib.file.mkOutOfStoreSymlink;
 in
 {
@@ -94,7 +95,7 @@ in
 
   # === Dotfiles: keep YOUR hand-written configs, edited live ==============
   # We do NOT let home-manager generate these — we out-of-store-symlink your
-  # existing repo files, so `nvim ~/dotfiles/...` edits are live immediately.
+  # existing repo files, so `nvim ~/github/erlorenz/dotfiles/...` edits are live.
   home.file = {
     ".zshenv".source                  = link "${repo}/.zshenv";
     ".config/zsh/.zshrc".source       = link "${repo}/.config/zsh/.zshrc";

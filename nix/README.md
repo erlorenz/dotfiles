@@ -13,7 +13,7 @@ One `flake.nix`, two entry points:
   there is no nix-darwin on Linux)
 
 Nix becomes the single thing you install by hand; it installs everything else.
-Your dotfiles live in `~/dotfiles` (a normal repo you edit directly — **home is
+Your dotfiles live in `~/github/erlorenz/dotfiles` (a normal repo you edit directly — **home is
 no longer a git repo**), and home-manager symlinks them into place with
 `mkOutOfStoreSymlink`, so edits are **live** without a rebuild.
 
@@ -24,11 +24,11 @@ curl -fsSL https://raw.githubusercontent.com/erlorenz/dotfiles/main/nix/install.
 ```
 
 `install.sh` ensures git/curl (Xcode CLT on mac, apt on Ubuntu), installs
-Homebrew on mac (for casks), installs **Nix**, clones the repo to `~/dotfiles`,
+Homebrew on mac (for casks), installs **Nix**, clones the repo to `~/github/erlorenz/dotfiles`,
 runs the switch, and installs Claude Code. The **system git** does the initial
 clone; Nix then installs the updated git you actually use.
 
-Day-to-day after that: edit configs live in `~/dotfiles`; run `./rebuild.sh`
+Day-to-day after that: edit configs live in `~/github/erlorenz/dotfiles`; run `./rebuild.sh`
 only when you change **packages** or the Nix files; `nix flake update` +
 `./rebuild.sh` to update everything (deliberate, pinned via `flake.lock`).
 
